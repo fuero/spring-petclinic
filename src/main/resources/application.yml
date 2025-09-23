@@ -1,0 +1,51 @@
+---
+database: h2
+spring:
+  sql:
+    init:
+      schema-locations: "classpath*:db/${database}/schema.sql"
+      data-locations: "classpath*:db/${database}/data.sql"
+  thymeleaf:
+    mode: HTML
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+
+  messages:
+    basename: messages/messages
+
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: "12h"
+
+# Logging
+logging:
+  level:
+    org.springframework: INFO
+    org.springframework.web: DEBUG
+    org.springframework.context.annotation: TRACE
+
+otel:
+  exporter:
+    otlp:
+      endpoint: "http://localhost:4318"
+      protocol: "http/protobuf"
+  logs:
+    exporter: otlp
+  metrics:
+    exporter: otlp
+    interval: 10s
+  traces:
+    exporter: otlp
+    sampler:
+      ratio: 1.0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
