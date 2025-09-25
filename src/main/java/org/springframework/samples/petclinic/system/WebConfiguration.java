@@ -48,13 +48,20 @@ public class WebConfiguration implements WebMvcConfigurer {
 		return interceptor;
 	}
 
+	@Bean
+	public SpringSQLCommenterInterceptor sqlInterceptor() {
+		return new SpringSQLCommenterInterceptor();
+	}
+
 	/**
-	 * Registers the locale change interceptor so it can run on each request.
+	 * Registers the locale change interceptor so it can run on each request. Registers
+	 * the the sql comment intereptor
 	 * @param registry where interceptors are added
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());
+		registry.addInterceptor(sqlInterceptor());
 	}
 
 }
